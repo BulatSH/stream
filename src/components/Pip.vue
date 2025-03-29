@@ -81,7 +81,6 @@ onMounted(() => {
     crossorigin="anonymous"
     playsinline
     webkit-playsinline
-    disablePictureInPicture="false"
     style="max-width: 300px"
 >
   <source src="../assets/videos/test.mp4" type="video/mp4">
@@ -89,5 +88,6 @@ onMounted(() => {
 <button @click="togglePiP">Toggle Picture-in-Picture</button>
 <p style="color: red;">
   {{ pipSupported }}
+  Тест, что обновилось
 </p>
 </template>

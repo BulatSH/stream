@@ -2,6 +2,7 @@
 import { onMounted, useTemplateRef } from "vue";
 
 const videoPlayer = useTemplateRef('videoPlayer')
+const remoteVideoPlayer = useTemplateRef('remoteVideoPlayer')
 
 const startVideoStream = async (): Promise<void> => {
   try {
@@ -59,9 +60,9 @@ const startVideoStream = async (): Promise<void> => {
 
     // 5. Обработка входящих потоков от сервера
     peerConnection.ontrack = (event) => {
-      if (!videoPlayer.value) return;
       if (event.streams && event.streams[0]) {
-        videoPlayer.value.srcObject = event.streams[0];
+        // Добавляем поток во второе видео
+        remoteVideoPlayer.value.srcObject = event.streams[0];
       }
     };
 
@@ -72,6 +73,7 @@ const startVideoStream = async (): Promise<void> => {
 
     // 7. Отправка локального видео в элемент video
     videoPlayer.value.srcObject = localStream;
+    remoteVideoPlayer.value.srcObject = localStream;
 
     // 8. Создаем и отправляем offer
     const offer = await peerConnection.createOffer();
@@ -123,6 +125,7 @@ onMounted(() => {
 <!--  <q-video src="test"></q-video>-->
 <div style="max-width: 300px; margin: 0 auto;">
   <video ref="videoPlayer" controls></video>
+  <video ref="remoteVideoPlayer" controls style="margin-top: 20px;"></video>
 </div>
 </template>
 
